@@ -159,9 +159,13 @@ module Turkee
     end
 
     def self.form_url(host, typ)
-      @app ||= ActionController::Integration::Session.new
+      # @app ||= ActionDispatch::Integration::Session.new Rails.application
       #@app.send("new_#{typ.to_s.underscore}_url(:host => '#{host}')")  # Not sure why app does respond when :host is passed...
-      (host + @app.send("new_#{typ.to_s.underscore}_path")) # Workaround for now. :(
+      include Rails.application.routes.url_helpers
+      default_url_options[:host] = host
+      
+      # (host + @app.send("new_#{typ.to_s.underscore}_path")) # Workaround for now. :(
+      (host + self.send("new_#{typ.to_s.underscore}_path")) # Workaround for now. :(
     end
 
   end
