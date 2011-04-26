@@ -6,14 +6,40 @@ require 'active_record'
 require 'action_view'
 require 'active_support'
 require 'action_controller'
+require 'mongoid'
 
 module Turkee
 
   # Model simply tracks what assignments have been imported
-  class TurkeeImportedAssignment < ActiveRecord::Base
+  class TurkeeImportedAssignment
+    include Mongoid::Document
+
+    field :assignment_id
+    field :created_at, :type => DateTime
+    field :updated_at, :type => DateTime
+
+    index :assignment_id, :unique => true
   end
 
-  class TurkeeTask < ActiveRecord::Base
+  class TurkeeTask
+    include Mongoid::Document
+
+    field :hit_url
+    field :sandbox, :type => Boolean
+    field :task_type
+    field :hit_title
+    field :hit_description
+    field :hit_id
+    field :hit_reward, :type => Float
+    field :hit_num_assignments, :type => Integer
+    field :tih_lifetime, :type => Integer
+    field :form_url
+    field :complete, :type => Boolean
+    field :created_at, :type => DateTime
+    field :updated_at, :type => DateTime
+
+    index :assignment_id, :unique => true
+    
     # belongs_to :task, :polymorphic => true
     HIT_FRAMEHEIGHT     = 1000
 
